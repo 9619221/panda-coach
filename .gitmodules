@@ -1,0 +1,3 @@
+[submodule "references/knowledge"]
+	path = references/knowledge
+	url = https://github.com/9619221/panda-knowledge.git

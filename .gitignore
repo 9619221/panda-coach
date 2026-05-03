@@ -6,3 +6,8 @@
 # 系统
 .DS_Store
 Thumbs.db
+
+# 依赖与生成物
+node_modules/
+charts/node_modules/
+charts/output/

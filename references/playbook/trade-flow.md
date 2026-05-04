@@ -30,9 +30,9 @@
 
 ---
 
-## Step 1.5 · 市场状态前置过滤（读 system_v2）
+## Step 1.5 · 市场状态前置过滤（读 system_v3）
 
-**读** [`trading-system/system_v2.md`](../../trading-system/system_v2.md) §6（本 skill 内置，无需外部路径）。
+**读** [`trading-system/system_v3.md`](../../trading-system/system_v3.md)（本 skill 内置，无需外部路径）。
 
 计算日线 ATR(14) / 现价：
 - ATR/价 < 2% → **震荡市**：禁用突破/破位 60 分制，切 4B 高抛低吸规则（接近区间上沿试空、下沿试多、目标中位、仓位减半）

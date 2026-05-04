@@ -80,17 +80,39 @@ def fetch_range(inst_id: str, bar: str, start: datetime, end: datetime) -> pd.Da
     return df.reset_index(drop=True)
 
 
-def save_parquet(df: pd.DataFrame, inst_id: str, bar: str, out_dir: Path) -> Path:
+def _parquet_name(inst_id: str, bar: str, tag: str | None = None) -> str:
+    base = f"{inst_id.replace('-', '_')}_{bar}"
+    return f"{base}_{tag}.parquet" if tag else f"{base}.parquet"
+
+
+def save_parquet(df: pd.DataFrame, inst_id: str, bar: str, out_dir: Path, tag: str | None = None) -> Path:
     out_dir.mkdir(parents=True, exist_ok=True)
-    fname = f"{inst_id.replace('-', '_')}_{bar}.parquet"
-    path = out_dir / fname
+    path = out_dir / _parquet_name(inst_id, bar, tag)
     df.to_parquet(path, index=False)
     return path
 
 
-def load_parquet(inst_id: str, bar: str, out_dir: Path) -> pd.DataFrame:
-    fname = f"{inst_id.replace('-', '_')}_{bar}.parquet"
-    return pd.read_parquet(out_dir / fname)
+def load_parquet(inst_id: str, bar: str, out_dir: Path, tag: str | None = None) -> pd.DataFrame:
+    return pd.read_parquet(out_dir / _parquet_name(inst_id, bar, tag))
+
+
+def fetch_or_load(
+    inst_id: str,
+    bar: str,
+    start: datetime,
+    end: datetime,
+    out_dir: Path,
+    tag: str | None = None,
+    force: bool = False,
+) -> pd.DataFrame:
+    """有缓存读缓存，没有就拉。tag 用于区分不同时段（如 '2022', '2025-365d'）。"""
+    out_dir.mkdir(parents=True, exist_ok=True)
+    path = out_dir / _parquet_name(inst_id, bar, tag)
+    if path.exists() and not force:
+        return pd.read_parquet(path)
+    df = fetch_range(inst_id, bar, start, end)
+    df.to_parquet(path, index=False)
+    return df
 
 
 def main() -> None:

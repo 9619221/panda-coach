@@ -11,3 +11,10 @@ Thumbs.db
 node_modules/
 charts/node_modules/
 charts/output/
+
+# Python 回测
+scripts/backtest/.venv/
+scripts/backtest/data/
+scripts/backtest/__pycache__/
+scripts/backtest/**/__pycache__/
+scripts/backtest/*.egg-info/
